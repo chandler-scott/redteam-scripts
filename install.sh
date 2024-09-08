@@ -11,7 +11,6 @@ if [ ! -d "$TARGET_DIR" ]; then
 fi
 
 # Link all .sh files from the scripts directory to /usr/scripts
-echo $SCRIPT_DIR
 for script in "$SCRIPT_DIR"/*.sh; do
     if [ -f "$script" ]; then
         sudo ln -sf "$script" "$TARGET_DIR/$(basename $script)"

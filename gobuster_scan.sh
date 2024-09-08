@@ -10,8 +10,10 @@ fi
 HOST=$1
 PORT=$2
 
+OUTPUT_FILE="$HOME/target/webpages"
+
 # Wordlist to use (you can change this to any wordlist you'd like)
 WORDLIST="/usr/share/wordlists/dirb/common.txt"
 
 # Run gobuster directory scan
-gobuster dir -u http://$HOST:$PORT -w $WORDLIST -t 50 -x php,html,txt
+gobuster dir -u http://$HOST:$PORT -w $WORDLIST -t 50 -x php,html,txt > webpages

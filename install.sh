@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/zsh
 
 # Get the directory of the install.sh script
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/scripts"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TARGET_DIR="/usr/scripts"
-BASHRC_FILE="$HOME/.bashrc"
+ZSHRC_FILE="$HOME/.zshrc"
 
 # Create the target directory if it doesn't exist
 if [ ! -d "$TARGET_DIR" ]; then
@@ -11,6 +11,7 @@ if [ ! -d "$TARGET_DIR" ]; then
 fi
 
 # Link all .sh files from the scripts directory to /usr/scripts
+echo $SCRIPT_DIR
 for script in "$SCRIPT_DIR"/*.sh; do
     if [ -f "$script" ]; then
         sudo ln -sf "$script" "$TARGET_DIR/$(basename $script)"
@@ -18,11 +19,11 @@ for script in "$SCRIPT_DIR"/*.sh; do
 done
 
 # Add /usr/scripts to .bashrc if it doesn't already exist
-if ! grep -q "$TARGET_DIR" "$BASHRC_FILE"; then
-    echo "export PATH=\$PATH:$TARGET_DIR" >> "$BASHRC_FILE"
-    echo "/usr/scripts added to PATH in .bashrc"
+if ! grep -q "$TARGET_DIR" "$ZSHRC_FILE"; then
+    echo "export PATH=\$PATH:$TARGET_DIR" >> "$ZSHRC_FILE"
+    echo "/usr/scripts added to PATH in .zshrc"
 fi
 
 # Reload .bashrc
-source "$BASHRC_FILE"
+source "$ZSHRC_FILE"
 

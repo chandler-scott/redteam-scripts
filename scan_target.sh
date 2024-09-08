@@ -5,6 +5,7 @@ if [ "$#" -ne 1 ]; then
     echo "Usage: $0 <IP_ADDRESS_OR_HOSTNAME>"
     exit 1
 fi
+
 OUTPUT_FILE=target_report
 TARGET=$1
 

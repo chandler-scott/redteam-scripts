@@ -6,8 +6,18 @@ if [ "$#" -ne 1 ]; then
     exit 1
 fi
 
-OUTPUT_FILE=target_report
 TARGET=$1
+
+# Set the target directory
+TARGET_DIR="$HOME/target"
+
+# Check if the target directory exists
+if [ -d "$TARGET_DIR" ]; then
+    OUTPUT_FILE="$TARGET_DIR/target_report"
+    echo "Directory exists. OUTPUT_FILE set to $OUTPUT_FILE."
+else
+    echo "Directory $TARGET_DIR does not exist."
+fi
 
 # Validate if the argument is a valid IP address or hostname
 if ! [[ "$TARGET" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]] && ! [[ "$TARGET" =~ ^[a-zA-Z0-9.-]+$ ]]; then

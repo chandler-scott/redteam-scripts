@@ -7,13 +7,13 @@ if [ "$#" -ne 2 ]; then
 fi
 
 # Assign variables from arguments
-HOST=$1
+TARGET=$1
 PORT=$2
 
-OUTPUT_FILE="$HOME/target/webpages"
+OUTPUT_FILE="$HOME/target/port_$PORT"
 
 # Wordlist to use (you can change this to any wordlist you'd like)
 WORDLIST="/usr/share/wordlists/dirb/common.txt"
 
 # Run gobuster directory scan
-gobuster dir -u http://$HOST:$PORT -w $WORDLIST -t 50 -x php,html,txt > webpages
+gobuster dir -u http://$TARGET:$PORT -w $WORDLIST -t 50 -x php,html,txt > $OUTPUT_FILE 2> /dev/null

@@ -2,7 +2,7 @@
 
 # Check if an argument is provided
 if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 <IP_ADDRESS_OR_HOSTNAME>"
+    echo "Usage: $0 <hostname/ip>"
     exit 1
 fi
 
@@ -40,8 +40,7 @@ IFS=$'\n' read -r -d '' -a ports <<< "$output"
 for port in "${ports[@]}"; do
     echo "Scanning port: $port"
     port_int=$(printf "%d" "$port" 2>/dev/null)
-    sudo nmap -v -sV $TARGET -p $port_int | grep -E "$port_int/(tcp|udp)\s+open" >> $OUTPUT_FILE
-
+    sudo nmap -v -sV $TARGET -p $port_int | grep -E "$port_int/(tcp|udp)\s+open" >> $OUTPUT_FILE &
 done
 
 

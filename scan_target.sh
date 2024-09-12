@@ -26,7 +26,10 @@ if ! [[ "$TARGET" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]] && ! [[ "$TARGET" =~ ^[
 fi
 
 echo "Scanning $TARGET..."
-echo "Target: $TARGET" > $OUTPUT_FILE
+echo "===========================" > $OUTPUT_FILE
+echo "  Target: $TARGET" >> $OUTPUT_FILE
+echo "===========================" >> $OUTPUT_FILE
+echo "" >> $OUTPUT_FILE
 
 # Run rustscan, filter the output, and process with awk
 output=$(docker run -it --rm --name rustscan rustscan/rustscan:2.1.1 -a "$TARGET" | \
@@ -39,8 +42,14 @@ IFS=$'\n' read -r -d '' -a ports <<< "$output"
 # Loop through the array
 for port in "${ports[@]}"; do
     echo "Scanning port: $port"
+    echo "-----------------------" >> $OUTPUT_FILE
+    echo "  Port: $port" >> $OUTPUT_FILE
+    echo "-----------------------" >> $OUTPUT_FILE
+
     port_int=$(printf "%d" "$port" 2>/dev/null)
-    sudo nmap -v -sV $TARGET -p $port_int | grep -E "$port_int/(tcp|udp)\s+open" >> $OUTPUT_FILE &
+    sudo nmap -v -sV $TARGET -p $port_int | \
+        grep -E "$port_int/(tcp|udp)\s+open" | \
+        awk '{print "  Protocol: " $3 "\n  Service: " substr($0, index($0,$4))}' >> $OUTPUT_FILE 
 done
 
 

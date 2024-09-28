@@ -21,12 +21,14 @@ else
 fi
 
 # Modify /etc/hosts with sudo
-# Check if the target is already listed
-if ! grep -qE "^$TARGET[[:space:]]+target" "$HOSTS_FILE"; then
+if grep -qE "^$TARGET[[:space:]]+target" "$HOSTS_FILE"; then
+    # Update the line if it exists
+    sudo sed -i "s|^$TARGET[[:space:]]\+target|$HOSTS_LINE|" "$HOSTS_FILE"
+    echo "Updated $HOSTS_LINE in $HOSTS_FILE."
+else
+    # Add the line if it does not exist
     echo "$HOSTS_LINE" | sudo tee -a "$HOSTS_FILE" > /dev/null
     echo "Added $HOSTS_LINE to $HOSTS_FILE."
-else
-    echo "$HOSTS_LINE already exists in $HOSTS_FILE."
 fi
 
 echo "Target setup completed."

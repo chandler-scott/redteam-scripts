@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 TARGET=$1
-ZSHRC_FILE="/home/chandler/.zshrc"
+ZSHRC_FILE="$HOME/.zshrc"
 HOSTS_FILE="/etc/hosts"
 HOSTS_LINE="$TARGET target"
 
@@ -19,6 +19,8 @@ else
     echo "export TARGET=$TARGET" >> "$ZSHRC_FILE"
     echo "Added TARGET variable to $ZSHRC_FILE."
 fi
+
+source $ZSHRC_FILE
 
 # Modify /etc/hosts with sudo
 if grep -q "target" "$HOSTS_FILE"; then

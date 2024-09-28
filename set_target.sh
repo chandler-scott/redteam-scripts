@@ -21,7 +21,8 @@ else
 fi
 
 # Modify /etc/hosts with sudo
-if grep -q "$HOSTS_LINE" "$HOSTS_FILE"; then
+# Check if the target is already listed
+if grep -q "^[[:space:]]*$TARGET[[:space:]]\+target" "$HOSTS_FILE"; then
     echo "$HOSTS_LINE already exists in $HOSTS_FILE."
 else
     echo "$HOSTS_LINE" | sudo tee -a "$HOSTS_FILE" > /dev/null

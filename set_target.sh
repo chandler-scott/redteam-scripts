@@ -1,7 +1,6 @@
 #!/bin/bash
 
 TARGET=$1
-IP_ADDRESS="192.168.1.10"  # Example IP Address; customize as needed
 
 # Check if the TARGET argument is provided
 if [ -z "$TARGET" ]; then
@@ -22,7 +21,7 @@ else
 fi
 
 # Add or update the target in /etc/hosts (IP_ADDRESS TARGET_ALIAS target)
-HOSTS_LINE="$IP_ADDRESS $TARGET target"
+HOSTS_LINE="$TARGET target"
 if grep -q "$TARGET" /etc/hosts; then
   sed -i "/$TARGET/c\\$HOSTS_LINE" /etc/hosts
   echo "Updated $TARGET in /etc/hosts."

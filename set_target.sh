@@ -21,9 +21,9 @@ else
 fi
 
 # Modify /etc/hosts with sudo
-if grep -qE "^$TARGET[[:space:]]+target" "$HOSTS_FILE"; then
+if grep "target" "$HOSTS_FILE"; then
     # Update the line if it exists
-    sudo sed -i "s|^$TARGET[[:space:]]\+target|$HOSTS_LINE|" "$HOSTS_FILE"
+    sudo sed -i "s|^[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\} target|$HOSTS_LINE|" "$HOSTS_FILE"
     echo "Updated $HOSTS_LINE in $HOSTS_FILE."
 else
     # Add the line if it does not exist

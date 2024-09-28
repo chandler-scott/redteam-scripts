@@ -1,0 +1,5 @@
+- rename to red-team-scripts
+- set up target script
+- redo web enum script
+- write password bruteforce script
+- add sudo privilege to scripts

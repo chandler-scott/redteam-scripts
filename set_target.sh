@@ -22,7 +22,7 @@ fi
 
 # Modify /etc/hosts with sudo
 # Check if the target is already listed
-if ! grep -qE "^[[:space:]]*$TARGET[[:space:]]+target" "$HOSTS_FILE"; then
+if ! grep -qE "^$TARGET[[:space:]]+target" "$HOSTS_FILE"; then
     echo "$HOSTS_LINE" | sudo tee -a "$HOSTS_FILE" > /dev/null
     echo "Added $HOSTS_LINE to $HOSTS_FILE."
 else
